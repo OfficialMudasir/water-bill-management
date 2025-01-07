@@ -1,0 +1,17 @@
+{
+  "routes": {
+    "/": {},
+    "/approvals": {},
+    "/billing": {},
+    "/connections": {},
+    "/consumer/complaint-history": {},
+    "/consumer/consumer": {},
+    "/consumer/my-bills": {},
+    "/consumer/payment-adjustment": {},
+    "/consumer/register-complaint": {},
+    "/dashboard": {},
+    "/login": {},
+    "/reports": {},
+    "/settings": {}
+  }
+}
