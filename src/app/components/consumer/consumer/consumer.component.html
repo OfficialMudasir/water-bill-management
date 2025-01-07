@@ -1,0 +1,308 @@
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <!-- Header with New Consumer Button -->
+            <div class="mb-5 mt-2">
+
+             
+                <button type="button" class="btn btn-dark p-2 fw-bold" (click)="resetForm()" data-bs-toggle="modal" data-bs-target="#newConsumerModal">
+                    <i class="bi bi-plus-lg me-2"></i>New Consumer Registration
+                </button>
+
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="row mb-4 g-3">
+                <div class="col-md-6">
+                    <div class="position-relative">
+                        <input type="text" class="form-control" placeholder="Search Consumers..."
+                            [(ngModel)]="searchTerm">
+                        <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3"></i>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" [(ngModel)]="selectedStatus">
+                        <option value="">Status</option>
+                        <option value="active">Active</option>
+                        <option value="pending">Pending</option>
+                        <option value="disconnected">Disconnected</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" [(ngModel)]="selectedType">
+                        <option value="">Type</option>
+                        <option value="residential">Residential</option>
+                        <option value="commercial">Commercial</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- consumers Table -->
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>CONSUMER ID</th>
+                                <th>CONSUMER NAME</th>
+                                <th>TYPE</th>
+                                <th>STATUS</th>
+                                <th>DIV</th>
+                                <th>COLLECTION CENTER</th>
+                                <th>MODE</th>
+                                <th>SOURCE</th>
+                                <!-- <th>TEMPORARY FORM NO.</th> -->
+                                <!-- <th>PERMANENT FORM NO.</th> -->
+                                <!-- <th>FIRST NAME</th> -->
+                                <!-- <th>LAST NAME</th> -->
+                                <th>OCCUPATION</th>
+                                <!-- <th>PRESENT ADDRESS</th> -->
+                                <!-- <th>MOBILE NO.</th> -->
+                                <th>FORM FEE</th>
+                                <th>RECEIPT NO.</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let consumer of consumersNew">
+                                <td>{{consumer.id}}</td>
+                                <td>{{consumer.consumerName}}</td>
+                                <td>{{consumer.type}}</td>
+                                <td>
+                                    <span [class]="getStatusClass(consumer.status)">
+                                        {{consumer.status}}
+                                    </span>
+                                </td>
+                                <td>{{consumer.div}}</td>
+                                <td>{{consumer.collectionCenter}}</td>
+                                <td>{{consumer.mode}}</td>
+                                <td>{{consumer.source}}</td>
+                                <!-- <td>{{consumer.temporaryFormNo}}</td> -->
+                                <!-- <td>{{consumer.permanentFormNo}}</td> -->
+                                <!-- <td>{{consumer.firstName}}</td> -->
+                                <!-- <td>{{consumer.lastName}}</td> -->
+                                <td>{{consumer.occupation}}</td>
+                                <!-- <td>{{consumer.presentAddress}}</td> -->
+                                <!-- <td>{{consumer.mobileNo}}</td> -->
+                                <td>{{consumer.formFee}}</td>
+                                <td>{{consumer.receiptNo}}</td>
+                                <td>
+                                    <button class="btn btn-link text-dark p-0 me-2" (click)="openEditModal(consumer)" data-bs-toggle="modal" data-bs-target="#newConsumerModal">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button class="btn btn-link text-danger p-0">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="text-muted">
+                    Showing 1 to 10 of 97 results
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary">Previous</button>
+                    <button class="btn btn-outline-secondary">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- New Consumer Modal -->
+<div class="modal fade" id="newConsumerModal" tabindex="-1" aria-labelledby="newConsumerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newConsumerModalLabel">{{ consumerModalHeader }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <h6 class="Headings mb-4 mt-0">Form Details [ {{todayDate}} ]</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Div</label>
+                                <select class="form-select border-focus" [(ngModel)]="newconsumer.div" name="div" required>
+                                    <option value="" disabled>Select a Division</option>
+                                    <option value="Division 1">Division 1</option>
+                                    <option value="Division 2">Division 2</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Collection Center</label>
+                                <select class="form-select border-focus" [(ngModel)]="newconsumer.collectionCenter" name="collectionCenter" required>
+                                    <option value="" disabled>Select a Collection Center</option>
+                                    <option value="Center 1">Center 1</option>
+                                    <option value="Center 2">Center 2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Mode</label>
+                                <select class="form-select border-focus" [(ngModel)]="newconsumer.mode" name="mode" required>
+                                    <option value="" disabled>Select a Mode</option>
+                                    <option value="Online">Online</option>
+                                    <option value="Offline">Offline</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Source</label>
+                                <select class="form-select border-focus" [(ngModel)]="newconsumer.source" name="source" required>
+                                    <option value="" disabled>Select a Source</option>
+                                    <option value="Website">Website</option>
+                                    <option value="Referral">Referral</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Temporary Form No.</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="newconsumer.temporaryFormNo" name="temporaryFormNo" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="mb-3">
+                                <label>Purchase Date</label>
+                                <input type="date" class="form-control border-focus" [(ngModel)]="newconsumer.purchaseDate" name="purchaseDate" required />
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Permanent Form No.</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="newconsumer.permanentFormNo" name="permanentFormNo" required />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Submission Date</label>
+                                <input type="date" class="form-control border-focus" [(ngModel)]="newconsumer.submissionDate" name="submissionDate" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <h6 class="Headings mb-4 mt-0">Type of Connection</h6>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Type of Connection</label>
+
+                                <select class="form-select border-focus" [(ngModel)]="newconsumer.type" name="type" required>
+                                    <option value="" disabled>Select a Connection Type</option>
+                                    <option value="Water">Water</option>
+                                    <option value="Sewer">Sewer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-0">
+                            <div class="mb-3">
+                                <label>Applicant is Already Consumer?</label>
+                                <select class="form-select border-focus" [(ngModel)]="newconsumer.isAlreadyConsumer" name="isAlreadyConsumer" required>
+                                    <option value="" disabled>Select Option</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h6 class="Headings mb-4">Applicant's Details</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>First Name</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="newconsumer.firstName" name="firstName" required />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="newconsumer.lastName" name="lastName" required />
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Father's/Husband's Name</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="newconsumer.fatherHusbandName" name="fatherHusbandName" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Occupation</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="newconsumer.occupation" name="occupation" required />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Present Address</label>
+                                <textarea class="form-control border-focus" name="presentAddress" id="presentAddress" cols="30" rows="4" [(ngModel)]="newconsumer.presentAddress"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Phone No</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="newconsumer.phoneNumber" name="phoneNo" required />
+                            </div>
+                            <div class="mb-3">
+                                <label>Mobile No</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="newconsumer.mobileNo" name="mobileNo" required />
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <h6 class="Headings mb-4 mt-0"><span style="opacity: 0;">Form Fees</span></h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Form Fee</label>
+                                <input type="number" class="form-control border-focus" [(ngModel)]="newconsumer.formFee" name="formFee" required disabled="true"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label>Receipt No</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="newconsumer.receiptNo" name="receiptNo" required />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                    (click)="resetForm()">Cancel</button>
+                <button type="submit" class="btn btn-dark btn-submit" id="btn-submit" (click)="updateConsumer()">{{ isConsumerUpdateModalOpen ? 'Update Application' : 'Submit Application' }}</button>
+            </div>
+        </div>
+    </div>
+</div>

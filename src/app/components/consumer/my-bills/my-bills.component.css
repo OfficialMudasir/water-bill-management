@@ -1,0 +1,156 @@
+.settings-nav {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    padding: 1.5rem;
+}
+
+.settings-category {
+    color: #666;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+}
+
+.settings-category i {
+    font-size: 1.1rem;
+}
+
+.settings-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 1.75rem;
+}
+
+.settings-item {
+    color: #666;
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.settings-item:hover {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.settings-item.active {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: 500;
+    border-left: 3px solid #0d6efd;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-body p {
+    margin: 5px 0;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.card-title {
+    color: #333;
+    font-weight: 500;
+}
+
+.form-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #666;
+}
+
+/* Icon colors */
+.bi-gear {
+    color: #0d6efd;  /* Bootstrap primary color */
+}
+
+.bi-shield-lock {
+    color: #198754;  /* Bootstrap success color */
+}
+
+.bi-database {
+    color: #6f42c1;  /* Bootstrap purple color */
+}
+
+.bi-sliders {
+    color: #fd7e14;  /* Bootstrap orange color */
+}
+
+.password-policy-options {
+    max-width: 600px;
+}
+
+.form-check-label {
+    color: #333;
+}
+
+.form-check-input {
+    border-color: #dee2e6;
+}
+
+.form-check-input:checked {
+    background-color: #212529;
+    border-color: #212529;
+}
+
+.form-check-input:focus {
+    box-shadow: none;
+    border-color: #666;
+} 
+
+
+.container-fluid{
+    margin-top: 50px !important;
+    margin-bottom: 50px !important;
+    /* margin-left: 50px !important; */
+
+}
+
+.container-view-payments{
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.list-group-item{
+    border: none !important;
+}
+
+.list-group-item.active {
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+  }
+
+  .Headings {
+    background-color: #212529;
+    color: whitesmoke;
+    padding: 10px;
+    /* border-radius: 10px; */
+    margin-left: -16px;
+    margin-right: -16px;
+}

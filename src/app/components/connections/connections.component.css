@@ -1,0 +1,35 @@
+
+*{
+    font-family: Montserrat, Inter, system-ui, sans-serif;
+}
+
+.table th {
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.btn-link {
+    text-decoration: none;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: none;
+    border-color: #666;
+}
+
+.position-relative .bi-search {
+    color: #666;
+} 
+
+
+
+input:focus {
+    border: 4px solid black; /* Focused state */
+}
+

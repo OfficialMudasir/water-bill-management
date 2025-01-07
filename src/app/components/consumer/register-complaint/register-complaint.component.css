@@ -1,0 +1,42 @@
+.border-dashed {
+    border-style: dashed !important;
+}
+
+.table th {
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.btn-link {
+    text-decoration: none;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: none;
+    border-color: #666;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.card-title {
+    color: #333;
+    font-weight: 500;
+} 
+
+.modal-content-custom{
+    width: 90% !important;
+}
+
+.border-focus:focus{
+    border: 4px solid #212529;
+}
+

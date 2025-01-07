@@ -1,0 +1,65 @@
+<ng-container>
+    <ng-template #notLoggedIn>
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="text-center">
+                <h2 class="text-danger">Access Denied</h2>
+                <p class="text-muted">You are not logged in. Please log in to access the dashboard.</p>
+                <button class="btn btn-dark w-100 mb-3" (click)="onLogout()">Go to Login</button>
+            </div>
+        </div>
+    </ng-template>
+
+    <div class="d-flex" *ngIf="isLoggedIn; else notLoggedIn">
+        <!-- Sidebar -->
+        <div class="sidebar bg-dark text-white">
+            <div class="p-4">
+                <h3 class="mb-4 text-center">WaterBill</h3>
+                <ul class="nav flex-column pt-4">
+                    <li *ngFor="let item of menuItems" class="nav-item mb-3">
+                        <a class="nav-link text-white-50" [routerLink]="[item.link]"
+                            (click)="setSelectedMenuItem(item.name)" routerLinkActive="active-link"
+                            [routerLinkActiveOptions]="{ exact: true }">
+                            <i [class]="item.icon + ' me-2'"></i> {{ item.name }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="user-info mt-auto p-3">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-person-circle me-2"></i>
+                    <span>{{ username }}</span>
+                    <i class="bi bi-box-arrow-right ms-2" style="cursor: pointer;" (click)="onLogout()"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content w-100 p-4">
+            <!-- Top Navbar -->
+            <div class="navbar navbar-expand-lg navbar-light bg-light mb-5 styleHorixNav">
+                <div class="container-fluid" style="margin: 14px;">
+                    <strong class="navbar-brand">{{ selectedMenuItem }}</strong>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto flex items-center space-x-4">
+                            <li *ngFor="let item of topMenuItems" class="nav-item">
+                                <a class="nav-link" [routerLink]="[item.link]" routerLinkActive="active">
+                                    <button class="p-1 bg-light" style="border: none; border-radius: 50%; ">
+                                        <i [class]="item.Icon + ' text-gray-600'"></i>
+                                    </button>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-0">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</ng-container>

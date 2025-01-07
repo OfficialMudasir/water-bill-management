@@ -1,0 +1,20 @@
+.card {
+    width: 100%;
+}
+
+/* Optional: Add any custom styles that aren't covered by Bootstrap */
+
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+  }
+  .password-control{
+    border-top-right-radius: 6px !important;
+    border-bottom-right-radius: 6px !important;
+  }

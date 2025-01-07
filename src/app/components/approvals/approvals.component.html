@@ -1,0 +1,435 @@
+<div class="container-fluid">
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <!-- Pending Approvals Card -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Pending Approvals</h5>
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>New Requests</span>
+                            <span class="badge bg-secondary rounded-pill">{{stats.newRequests}}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>In Progress</span>
+                            <span class="badge bg-secondary rounded-pill">{{stats.inProgress}}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>Ready for Final</span>
+                            <span class="badge bg-secondary rounded-pill">{{stats.readyForFinal}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Actions Card -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">My Actions</h5>
+                    <div class="d-grid gap-2">
+
+                        <ng-container *ngIf="userType !== 'Junior'; else assignEstimate">
+                            <button type="button" class="btn btn-dark" data-bs-toggle="modal"
+                                data-bs-target="#approveApplicationModal">
+                                Approve Application
+                            </button>
+                        </ng-container>
+
+                        <ng-template #assignEstimate>
+                            <button type="button" class="btn btn-dark" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                                Assign Estimate
+                            </button>
+                        </ng-template>
+
+                        <button class="btn btn-outline-dark">Bulk Approve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Approval Stats Card -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Approval Stats</h5>
+                    <div class="progress mb-3" style="height: 10px;">
+                        <div class="progress-bar bg-dark rounded" role="progressbar"
+                            [style.width.%]="stats.completionRate" [attr.aria-valuenow]="stats.completionRate"
+                            aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+                    <p class="text-muted mb-0">Average approval time: {{stats.averageTime}} days</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approval Queue Section -->
+    <div class="card">
+        <div class="card-body">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="card-title mb-0">Approval Queue</h5>
+                <div class="d-flex gap-2">
+                    <input type="text" class="form-control" placeholder="Search applications..."
+                        [(ngModel)]="searchTerm">
+                    <select class="form-select" style="width: 200px;" [(ngModel)]="selectedStatus">
+                        <option value="">Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Applications Table -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>
+                                <input type="checkbox" class="form-check-input" (change)="toggleSelectAll($event)">
+                            </th>
+                            <th>APPLICATION ID</th>
+                            <th>APPLICANT</th>
+                            <th>TYPE</th>
+                            <th>ESTIMATED AMOUNT</th>
+                            <th>STATUS</th>
+                            <th>APPROVE</th>
+                            <th>ACTIONS</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let app of applications">
+                            <td>
+                                <input type="checkbox" class="form-check-input" [checked]="isSelected(app.id)"
+                                    (change)="toggleSelect(app.id)">
+                            </td>
+                            <td>{{app.id}}</td>
+                            <td>{{app.applicant}}</td>
+                            <td>{{app.type}}</td>
+                            <td>
+                                <ng-container *ngIf="userType === 'Junior'; else otherestimated">
+                                    <ng-container *ngIf="app.status !== 'Pending'">
+                                        ₹{{app.estimatedAmount}}
+                                    </ng-container>
+                                </ng-container>
+
+                                <ng-template #otherestimated>
+                                    ₹{{app.estimatedAmount}}
+                                </ng-template>
+                            </td>
+                            <td>
+                                <span [class]="getStatusClass(app.status)">
+                                    {{app.status}}
+                                </span>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="userType === 'Junior'; else otherOptions">
+                                    <ng-container *ngIf="app.status === 'Pending'">
+                                        <button class="btn btn-dark" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal">Assign Estimate</button>
+                                    </ng-container>
+                                </ng-container>
+
+                                <ng-template #otherOptions>
+                                    <ng-container *ngIf="app.status === 'Pending'">
+                                        <div class="d-flex gap-3">
+
+                                            <ng-container *ngIf="userType === 'Assistant';">
+                                                <button class="btn btn-dark" id="approve"
+                                                    [hidden]="isApprovedOrRejected"
+                                                    (click)="showSuccess()">Approve</button>
+
+                                                <button class="btn btn-dark" id="reject" [hidden]="isApprovedOrRejected"
+                                                    (click)="showError()">Reject</button>
+                                            </ng-container>
+
+
+                                            <ng-container *ngIf="userType === 'Executive';">
+                                                <button class="btn btn-dark" id="approve" data-bs-toggle="modal"
+                                                    [hidden]="isApprovedOrRejected"
+                                                    data-bs-target="#statusSuccessModal">Approve</button>
+
+                                                <button class="btn btn-dark" id="reject" data-bs-toggle="modal"
+                                                    [hidden]="isApprovedOrRejected"
+                                                    data-bs-target="#statusErrorsModal">Reject</button>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+
+                                </ng-template>
+
+                            </td>
+                            <td>
+                                <button class="btn btn-link text-dark p-0 me-2">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-link text-dark p-0">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="text-muted">
+                    Showing 1 to 10 of 25 applications
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary">Previous</button>
+                    <button class="btn btn-outline-secondary">Next</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Cards -->
+    <div class="row g-4 my-4">
+        <!-- Connection Management -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Connection Management</h5>
+                    <div class="d-grid gap-2">
+                        <!-- <button class="btn btn-dark">Add Backlog Entry</button> -->
+
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal"
+                            data-bs-target="#addBacklogEntryModal">
+                            Add Backlog Entry
+                        </button>
+                        <button class="btn btn-outline-dark">Change Connection Status</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing Corrections -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Billing Corrections</h5>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-dark">Bill Generation Correction</button>
+                        <button class="btn btn-outline-dark">Regenerate Bills</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Management -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Data Management</h5>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-dark">Upload Data</button>
+                        <button class="btn btn-outline-dark">Download Reports</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Logs Section -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="card-title mb-0">System Logs</h5>
+                <div class="d-flex gap-2">
+                    <select class="form-select" style="width: 200px;" [(ngModel)]="selectedActivity">
+                        <option>All Activities</option>
+                        <option>Connections</option>
+                        <option>Billing</option>
+                        <option>System</option>
+                    </select>
+                    <button class="btn btn-outline-dark d-flex align-items-center gap-2">
+                        <i class="bi bi-download"></i>
+                        Export Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Logs List -->
+            <div class="list-group">
+                <div class="list-group-item border-0 ps-0" *ngFor="let log of systemLogs">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="log-icon">
+                            <i [class]="'bi ' + getLogIcon(log.type)"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">{{log.title}}</h6>
+                            <p class="text-muted small mb-0">{{log.details}}</p>
+                        </div>
+                        <div class="text-muted small">
+                            {{log.timestamp}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Assign Estimate Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header border-0">
+                <h4 class="modal-title fs-5" id="exampleModalLabel">
+                    Assign Estimate Amount
+                </h4>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body">
+
+                <form (ngSubmit)="onSubmit()">
+                    <div class="row g-4">
+                        <div class="col-md-12">
+                            <div class="mb-3"><label class="mb-2">Application ID</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="applicationId"
+                                    name="fullName" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="mb-2">Pipe Length (km)</label>
+                                <input type="number" class="form-control border-focus" [(ngModel)]="pipeLengthKm"
+                                    name="phoneNumber" required />
+                            </div>
+
+                            <div class="mb-0"><label class="mb-2">Estimate Amount ($)</label>
+                                <input type="number" class="form-control border-focus" [(ngModel)]="estimatedAmount"
+                                    name="phoneNumber" required />
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-dark">Submit Estimate</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Add Backlog Entry Modal -->
+<div class="modal fade" id="addBacklogEntryModal" tabindex="-1" aria-labelledby="addBacklogEntryModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h4 class="modal-title fs-5" id="addBacklogEntryModalLabel">
+                    Add Historical Connection
+                </h4>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body">
+
+                <form (ngSubmit)="onSubmit()">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="mb-3"><label class="mb-2">Connection ID</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="applicationId"
+                                    name="fullName" required />
+                            </div>
+
+                            <div class="mb-3"><label class="mb-2">Connection name</label>
+                                <input type="text" class="form-control border-focus" [(ngModel)]="estimatedAmount"
+                                    name="phoneNumber" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="mb-2">Connection Date</label>
+                                <input type="date" class="form-control border-focus" [(ngModel)]="pipeLengthKm"
+                                    name="phoneNumber" required />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="mb-2">Connection Type</label>
+                                <select class="form-control border-focus" [(ngModel)]="connectionType"
+                                    name="connectionType">
+                                    <option value="" selected>Select a Connection</option>
+                                    <option value="Residential">Residential</option>
+                                    <option value="Commercial">Commercial</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mt-0">
+                            <div class="mb-0">
+                                <label class="mb-2 mt-0">Address</label>
+                                <textarea class="form-control border-focus" id="w3review" [(ngModel)]="address"
+                                    name="address" rows="3" cols="40"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-dark">Save Entry</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="statusErrorsModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
+    data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center p-lg-4">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+                    <circle class="path circle" fill="none" stroke="#db3646" stroke-width="6" stroke-miterlimit="10"
+                        cx="65.1" cy="65.1" r="62.1" />
+                    <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round"
+                        stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+                    <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round"
+                        stroke-miterlimit="10" x1="95" y1="38" X2="25" y2="90" />
+                </svg>
+                <h4 class="text-danger mt-3">Rejected</h4>
+                <p class="mt-3">You Application has been Rejected. Please Contact Support!</p>
+                <button type="button" class="btn btn-sm mt-3 btn-danger" data-bs-dismiss="modal"
+                    (click)="hiddenButtons('Rejected')">Okay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="statusSuccessModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
+    data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center p-lg-4">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+                    <circle class="path circle" fill="none" stroke="#198754" stroke-width="6" stroke-miterlimit="10"
+                        cx="65.1" cy="65.1" r="62.1" />
+                    <polyline class="path check" fill="none" stroke="#198754" stroke-width="6" stroke-linecap="round"
+                        stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
+                </svg>
+                <h4 class="text-success mt-3">Approved</h4>
+                <p class="mt-3">Your application has been successfully Approved!</p>
+                <button type="button" class="btn btn-sm mt-3 btn-success" data-bs-dismiss="modal"
+                    (click)="hiddenButtons('Approved')">Okay</button>
+            </div>
+        </div>
+    </div>
+</div>

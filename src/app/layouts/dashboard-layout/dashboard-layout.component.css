@@ -1,0 +1,59 @@
+.body {
+    font-family: Montserrat, Inter, system-ui, sans-serif;
+}
+
+.sidebar {
+    width: 270px !important;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    background-color: black !important;
+    font-weight: bold;
+    font-family: Montserrat, Inter, system-ui, sans-serif;
+    overflow-y: auto;
+}
+
+.sidebar .nav {
+    flex-direction: column;
+}
+
+.main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    font-family: Montserrat, Inter, system-ui, sans-serif;
+}
+
+.nav-link {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    color: #fff !important;
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link .active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.user-info {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.styleHorixNav {
+    margin-top: -26px;
+    margin-left: -4px;
+    margin-right: -21px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.active-link {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 5px;
+}

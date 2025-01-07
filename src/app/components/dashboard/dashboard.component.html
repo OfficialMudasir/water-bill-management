@@ -1,0 +1,83 @@
+
+<!-- Stats Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="text-muted">Active Connections</h6>
+                    <i class="bi bi-plug text-primary"></i>
+                </div>
+                <h3 class="mb-2">2,451</h3>
+                <p class="text-success mb-0">
+                    <i class="bi bi-arrow-up"></i> 3.2% from last month
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="text-muted">Pending Approvals</h6>
+                    <i class="bi bi-clock text-warning"></i>
+                </div>
+                <h3 class="mb-2">85</h3>
+                <p class="text-muted mb-0">12 new requests today</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="text-muted">Total Revenue</h6>
+                    <i class="bi bi-currency-rupee text-success"></i>
+                </div>
+                <h3 class="mb-2">₹1.2M</h3>
+                <p class="text-success mb-0">
+                    <i class="bi bi-arrow-up"></i> 8.1% from last month
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="text-muted">Pending Payments</h6>
+                    <i class="bi bi-exclamation-circle text-danger"></i>
+                </div>
+                <h3 class="mb-2">324</h3>
+                <p class="text-danger mb-0">₹450K outstanding</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Section -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Connection Trends</h5>
+                <!-- Add chart here -->
+                <div class="chart-placeholder" style="max-height: 256px;">
+                    <canvas id="connectionTrendsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Revenue Analysis</h5>
+                <!-- Add chart here -->
+                <div class="chart-placeholder" style="max-height: 256px;display: flex;justify-content: center;">
+                    <canvas id="revenueAnalysisChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
