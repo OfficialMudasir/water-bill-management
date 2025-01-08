@@ -1,0 +1,83 @@
+{
+  "configVersion": 1,
+  "timestamp": 1736315760537,
+  "index": "/water-bill-management/index.csr.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/water-bill-management/index.csr.html",
+        "/water-bill-management/index.html",
+        "/water-bill-management/main-QDVKV6HM.js",
+        "/water-bill-management/manifest.webmanifest",
+        "/water-bill-management/polyfills-FFHMD2TL.js",
+        "/water-bill-management/styles-5INURTSO.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/water-bill-management/assets/Water-Bill-Management.png",
+        "/water-bill-management/assets/WaterBill.jpg",
+        "/water-bill-management/icons/icon-128x128.png",
+        "/water-bill-management/icons/icon-144x144.png",
+        "/water-bill-management/icons/icon-152x152.png",
+        "/water-bill-management/icons/icon-192x192.png",
+        "/water-bill-management/icons/icon-384x384.png",
+        "/water-bill-management/icons/icon-512x512.png",
+        "/water-bill-management/icons/icon-72x72.png",
+        "/water-bill-management/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/water-bill-management/assets/Water-Bill-Management.png": "6b22ebbc144018c1cc80df09b4bda3858a371b1d",
+    "/water-bill-management/assets/WaterBill.jpg": "a5018f2bbfb0d3f0c0eacfec891c4cbd9a6938fb",
+    "/water-bill-management/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
+    "/water-bill-management/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
+    "/water-bill-management/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
+    "/water-bill-management/icons/icon-192x192.png": "15c4180454633880d98674aa7394656196c91584",
+    "/water-bill-management/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
+    "/water-bill-management/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
+    "/water-bill-management/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
+    "/water-bill-management/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
+    "/water-bill-management/index.csr.html": "0c834b9cacf24806d3e9b5b32d19f2adc99ba34b",
+    "/water-bill-management/index.html": "13952586e1b35855f397033bc8f51332e157a504",
+    "/water-bill-management/main-QDVKV6HM.js": "df9281e9fed13c641761b3f5c65627e762bd4c92",
+    "/water-bill-management/manifest.webmanifest": "f6c927b28559070bd963fb2476f34e009a60b862",
+    "/water-bill-management/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
+    "/water-bill-management/styles-5INURTSO.css": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
