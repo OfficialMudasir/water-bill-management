@@ -100,6 +100,26 @@ export class ApprovalsComponent implements OnInit {
     }
   ];
 
+  changeConnectionRequests = [
+    {
+      connectionId: 'C001',
+      fullName: 'John Doe',
+      email: 'john.doe@example.com',
+      type: 'Residential',
+      status: 'Pending',
+      id: 1 
+    },
+    {
+      connectionId: 'C002',
+      fullName: 'Jane Smith',
+      email: 'jane.smith@example.com',
+      type: 'Commercial',
+      status: 'Pending',
+      id: 2 
+    },
+   
+  ];
+
   selectedActivity: string = 'All Activities';
 
 
@@ -181,6 +201,23 @@ export class ApprovalsComponent implements OnInit {
 
   onSubmit() {
 
+  }
+
+  approveRequest(id: string) {
+    const request = this.changeConnectionRequests.find((req) => req.connectionId === id);
+    if(request){
+      request.status = "Approved";
+    }
+
+    this.toastService.showSuccess("Connection Change Request has been Approved and Email has been sent to Consumer's email Id.")
+  }
+
+  rejectRequest(id: string) {
+    const request = this.changeConnectionRequests.find((req) => req.connectionId === id);
+    if(request){
+      request.status = "Rejected";
+    }
+    this.toastService.showError("Connection Change Request has been Rejected and Email has been sent to Consumer's email Id.")
   }
 
 } 

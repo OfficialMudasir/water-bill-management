@@ -59,21 +59,21 @@ interface NewConnection {
   city: string;
   state: string;
   pincode: string;
-  temporaryFormNo: string; // Add this field
-  permanentFormNo: string; // Add this field
-  isAlreadyConsumer: string; // Add this field
-  firstName: string; // Add this field
-  lastName: string; // Add this field
-  fatherHusbandName: string; // Add this field
-  occupation: string; // Add this field
-  presentAddress: string; // Add this field
-  mobileNo: string; // Add this field
-  formFee: number; // Add this field
-  receiptNo: string; // Add this field
-  div: string; // Add this field for Div
-  collectionCenter: string; // Add this field for Collection Center
-  mode: string; // Add this field for Mode
-  source: string; // Add this field for Source
+  temporaryFormNo: string;
+  permanentFormNo: string;
+  isAlreadyConsumer: string;
+  firstName: string;
+  lastName: string;
+  fatherHusbandName: string;
+  occupation: string;
+  presentAddress: string;
+  mobileNo: string;
+  formFee: number;
+  receiptNo: string;
+  div: string;
+  collectionCenter: string;
+  mode: string;
+  source: string;
   purchaseDate: string;
   submissionDate: string;
 }
@@ -130,16 +130,18 @@ export class MyBillsComponent {
       items: [
         { name: 'View Current Bill', link: '#', active: true },
         { name: 'View Previous Bill', link: '#' },
-        { name: 'Pay Bill', link: '#' }
+        { name: 'Pay Bill', link: '#' },
+        { name: 'Change Connection Request', link: '#' }
+
       ]
     },
     {
       title: 'Bill Service Advance',
       icon: 'fa-shield-alt',
       items: [
-        { name: 'Pay Advance Bill', link: '#' },
+        { name: 'Pay Bill Before Due Date To Avail Discount', link: '#' },
         { name: 'Bill History', link: '#' },
-        { name: 'Bill Not Recieved', link: '#' }
+        { name: 'Online Bill Payment Status', link: '#' }
       ]
     },
     {
@@ -526,11 +528,6 @@ export class MyBillsComponent {
     }
   }
 
-  /**
-   * Ensures the image is fully loaded.
-   * @param image - The image element to check
-   * @returns A promise that resolves when the image is loaded
-   */
   private ensureImageLoaded(image: HTMLImageElement): Promise<void> {
     return new Promise((resolve, reject) => {
       if (image.complete && image.naturalHeight !== 0) {
@@ -605,7 +602,6 @@ export class MyBillsComponent {
   }
 
   onSubmit() {
-    debugger;
     const newConnection = {
       fullName: this.fullName,
       phoneNumber: this.phoneNumber,
@@ -617,6 +613,10 @@ export class MyBillsComponent {
       pinCode: this.pinCode
     };
     this.resetForm();
+  }
+
+  submitChangeRequest(){
+    this.toastService.showSuccess("Your Change Connection Request has been Submitted Successfully.")
   }
 
   resetForm() {

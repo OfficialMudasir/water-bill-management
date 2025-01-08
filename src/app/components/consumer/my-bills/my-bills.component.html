@@ -1,10 +1,10 @@
 <div class="container-fluid">
     <div class="mt-0 mb-4">
         <!-- Settings Categories -->
-         <!-- Header with New Consumer Button -->
-         <div class="">
-            <button type="button" class="btn btn-dark p-2 fw-bold" (click)="resetForm()"
-                data-bs-toggle="modal" data-bs-target="#newConnectionModal">
+        <!-- Header with New Consumer Button -->
+        <div class="">
+            <button type="button" class="btn btn-dark p-2 fw-bold" (click)="resetForm()" data-bs-toggle="modal"
+                data-bs-target="#newConnectionModal">
                 <i class="bi bi-plus-lg me-2"></i>Apply New Connection
             </button>
 
@@ -13,7 +13,7 @@
             <div class="col-md-3" *ngFor="let category of settingsCategories">
                 <div class="card h-100">
                     <div class="card-body">
-                        
+
                         <div class="d-flex align-items-center mb-3">
                             <i [class]="'fas ' + category.icon + ' me-2 w-6 text-primary-600'"></i>
                             <h5 class="card-title mb-0">{{category.title}}</h5>
@@ -541,113 +541,84 @@
 
 
         <div class="card mt-4" *ngIf="currentView === 'pay-bill'">
-            <div class="card-header p-3">
-                <h3>Pay Your Water Bill</h3>
-                <h6>Water price / sewer sheet / sewer combination fee / water column fee</h6>
+            <div class="card-header p-3" style="background-color: white;">
+                <h5>Pay Bill</h5>
             </div>
             <div class="card-body p-5">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-header p-3">
-                                <h5>{{ paymentMethods[0].name }}</h5>
-                            </div>
-                            <div class="card-body">
-                                <p>{{ paymentMethods[0].description }}</p>
-                                <button class="btn btn-dark mt-4">Pay Online</button>
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <h5>{{ paymentMethods[1].name }}</h5>
-                            </div>
-                            <div class="card-body">
-                                <p>{{ paymentMethods[1].description }}</p>
-                                <button class="btn btn-dark mt-4">Transfer Now</button>
-                            </div>
-                        </div>
-                    </div>
+                <p><strong>Consumer Code: </strong>CON001</p>
+                <p><strong>Current Reading: </strong>450 Units</p>
+                <p><strong>Amount: </strong><i class="bi bi-currency-rupee"></i>1500</p>
+
+                <div class="">
+                    <button type="button" class="btn btn-dark mt-4 mb-4">Proceed to Pay</button>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <!-- Card Payment Method -->
-                        <div class="card mt-4">
-                            <div class="card-header">
-                                <h5>Card Payment</h5>
-                            </div>
-                            <div class="card-body">
-                                <p>Use your credit or debit card to pay your bill securely.</p>
-                                <button class="btn btn-dark mt-4">Pay with Card</button>
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <div class="col-md-6">
-                        <!-- UPI Payment Method -->
-                        <div class="card mt-4">
-                            <div class="card-header">
-                                <h5>UPI Payment</h5>
-                            </div>
-                            <div class="card-body">
-                                <p>pay your bill through your UPI</p>
-                                <button class="btn btn-dark mt-4">Pay with UPI</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
 
             </div>
         </div>
 
-        <div class="card mt-4" *ngIf="currentView === 'pay-advance-bill'">
-            <div class="card-header p-3">
-                <h3>Pay Your Water Bill Advance</h3>
-                <h6>Water price / sewer sheet / sewer combination fee / water column fee</h6>
+        <div class="card mt-4" style="width: 49%;" *ngIf="currentView === 'change-connection-request'">
+            <div class="card">
+                <div class="card-header p-3" style="background-color: white;">
+                    <h4>Change Connection Request</h4>
+                </div>
+                <div class="card-body">
+
+                    <form (ngSubmit)="onSubmit()" #complaintForm="ngForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group ">
+                                    <label for="userName">Connection ID</label>
+                                    <input type="text" id="userName" [(ngModel)]="userName" name="userName" required
+                                        class="form-control mt-1" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group ">
+                                    <label for="userName">Full Name</label>
+                                    <input type="text" id="userName" [(ngModel)]="userName" name="userName" required
+                                        class="form-control mt-1" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group ">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" [(ngModel)]="email" name="email" required
+                                        class="form-control mt-1" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label>Type of Connection</label>
+                                <select class="form-select border-focus mt-1" [(ngModel)]="newconnection.type"
+                                    name="type" required>
+                                    <option value="" disabled>Select a Connection Type</option>
+                                    <option value="Residential">Residential</option>
+                                    <option value="Commercial">Commercial</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark mb-4 mt-4" (click)="submitChangeRequest()">Submit Connection Request</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4" style="width: 49%;" *ngIf="currentView === 'pay-bill-before-due-date-to-avail-discount'">
+            <div class="card-header p-3" style="background-color: white;">
+                <h5>Pay Bill Before Due Date To Avail Discount</h5>
             </div>
             <div class="card-body p-5">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <h5>{{ paymentMethods[0].name }}</h5>
-                            </div>
-                            <div class="card-body">
-                                <p>{{ paymentMethods[0].description }}</p>
-                                <button class="btn btn-dark mt-4">Pay Online</button>
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <h5>{{ paymentMethods[1].name }}</h5>
-                            </div>
-                            <div class="card-body">
-                                <p>{{ paymentMethods[1].description }}</p>
-                                <button class="btn btn-dark mt-4">Transfer Now</button>
-                            </div>
-                        </div>
-                    </div>
+                <p><strong>Consumer Code: </strong>CON001</p>
+                <p><strong>Current Reading: </strong>350 Units</p>
+                <p><strong>Amount with Discount Rate: </strong><i class="bi bi-currency-rupee"></i>1000</p>
+
+                <div class="">
+                    <button type="button" class="btn btn-dark mt-4 mb-4">Proceed to Pay Advance</button>
                 </div>
 
-                <!-- Card Payment Method -->
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h5>Card Payment</h5>
-                    </div>
-                    <div class="card-body">
-                        <p>Use your credit or debit card to pay your bill securely.</p>
-                        <button class="btn btn-dark mt-4">Pay with Card</button>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -827,12 +798,74 @@
             </div>
         </div>
 
-        <div class="card mt-4" *ngIf="currentView === 'bill-not-recieved'">
+        <div class="card mt-4" *ngIf="currentView === 'online-bill-payment-status'">
+            <!-- Recent Bills Section -->
             <div class="card">
                 <div class="card-body">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="card-title mb-0">Bill Payment Status </h5>
+                        <div class="d-flex gap-2">
+                            <input type="text" class="form-control" placeholder="Search bills..."
+                                [(ngModel)]="searchTerm">
+                            <select class="form-select" style="width: 200px;" [(ngModel)]="selectedPaymentStatus">
+                                <option value="">Payment Status</option>
+                                <option value="paid">Paid</option>
+                                <option value="pending">Pending</option>
+                                <option value="overdue">Overdue</option>
+                            </select>
+                        </div>
+                    </div>
 
-                    <label>Bill Not Recieved</label>
-                    <input type="text" name="" id="" class="form-control">
+                    <!-- Bills Table -->
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>BILL ID</th>
+                                    <th>CONNECTION ID</th>
+                                    <th>AMOUNT</th>
+                                    <th>DUE DATE</th>
+                                    <th>STATUS</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let bill of bills">
+                                    <td>{{bill.id}}</td>
+                                    <td>{{bill.connectionId}}</td>
+                                    <td>₹{{bill.amount}}</td>
+                                    <td>{{bill.dueDate}}</td>
+                                    <td>
+                                        <span [class]="getStatusClass(bill.status)">
+                                            {{bill.status}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-link text-dark p-0 me-2" data-bs-toggle="modal"
+                                            data-bs-target="#imageModal">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-link text-dark p-0" data-bs-toggle="modal"
+                                            data-bs-target="#paymentRecieptModal">
+                                            <i class="bi bi-download"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <div class="text-muted">
+                            Showing 1 to 10 of 50 bills
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-secondary">Previous</button>
+                            <button class="btn btn-outline-secondary">Next</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -939,7 +972,6 @@
     </div>
 
 
-
     <!-- Modal for displaying image -->
     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -949,7 +981,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <img src="/assets/WaterBill.jpg" class="img-fluid" alt="Print Current Bill" />
+                    <img src="assets/WaterBill.jpg" class="img-fluid" alt="Print Current Bill" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -958,8 +990,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- Modal for displaying image -->
     <div class="modal fade" id="paymentRecieptModal" tabindex="-1" aria-labelledby="paymentRecieptModalLabel"
@@ -1037,195 +1067,217 @@
         </div>
     </div>
 
-
-    
-<!-- New Consumer Modal -->
-<div class="modal fade" id="newConnectionModal" tabindex="-1" aria-labelledby="newConnectionModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newConnectionModalLabel">{{ connectionModalHeader }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <h6 class="Headings mb-4 mt-0">Form Details [ {{todayDate}} ]</h6>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Div</label>
-                                <select class="form-select border-focus" [(ngModel)]="newconnection.div" name="div" required>
-                                    <option value="" disabled>Select a Division</option>
-                                    <option value="Division 1">Division 1</option>
-                                    <option value="Division 2">Division 2</option>
-                                </select>
+    <!-- New Consumer Modal -->
+    <div class="modal fade" id="newConnectionModal" tabindex="-1" aria-labelledby="newConnectionModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newConnectionModalLabel">{{ connectionModalHeader }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <h6 class="Headings mb-4 mt-0">Form Details [ {{todayDate}} ]</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Div</label>
+                                    <select class="form-select border-focus" [(ngModel)]="newconnection.div" name="div"
+                                        required>
+                                        <option value="" disabled>Select a Division</option>
+                                        <option value="Division 1">Division 1</option>
+                                        <option value="Division 2">Division 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Collection Center</label>
+                                    <select class="form-select border-focus"
+                                        [(ngModel)]="newconnection.collectionCenter" name="collectionCenter" required>
+                                        <option value="" disabled>Select a Collection Center</option>
+                                        <option value="Center 1">Center 1</option>
+                                        <option value="Center 2">Center 2</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Collection Center</label>
-                                <select class="form-select border-focus" [(ngModel)]="newconnection.collectionCenter" name="collectionCenter" required>
-                                    <option value="" disabled>Select a Collection Center</option>
-                                    <option value="Center 1">Center 1</option>
-                                    <option value="Center 2">Center 2</option>
-                                </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Mode</label>
+                                    <select class="form-select border-focus" [(ngModel)]="newconnection.mode"
+                                        name="mode" required>
+                                        <option value="" disabled>Select a Mode</option>
+                                        <option value="Online">Online</option>
+                                        <option value="Offline">Offline</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Mode</label>
-                                <select class="form-select border-focus" [(ngModel)]="newconnection.mode" name="mode" required>
-                                    <option value="" disabled>Select a Mode</option>
-                                    <option value="Online">Online</option>
-                                    <option value="Offline">Offline</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Source</label>
-                                <select class="form-select border-focus" [(ngModel)]="newconnection.source" name="source" required>
-                                    <option value="" disabled>Select a Source</option>
-                                    <option value="Website">Website</option>
-                                    <option value="Referral">Referral</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Temporary Form No.</label>
-                                <input type="text" class="form-control border-focus" [(ngModel)]="newconnection.temporaryFormNo" name="temporaryFormNo" required />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-
-                            <div class="mb-3">
-                                <label>Purchase Date</label>
-                                <input type="date" class="form-control border-focus" [(ngModel)]="newconnection.purchaseDate" name="purchaseDate" required />
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Permanent Form No.</label>
-                                <input type="text" class="form-control border-focus" [(ngModel)]="newconnection.permanentFormNo" name="permanentFormNo" required />
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Source</label>
+                                    <select class="form-select border-focus" [(ngModel)]="newconnection.source"
+                                        name="source" required>
+                                        <option value="" disabled>Select a Source</option>
+                                        <option value="Website">Website</option>
+                                        <option value="Referral">Referral</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Submission Date</label>
-                                <input type="date" class="form-control border-focus" [(ngModel)]="newconnection.submissionDate" name="submissionDate" required />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Temporary Form No.</label>
+                                    <input type="text" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.temporaryFormNo" name="temporaryFormNo" required />
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                            <div class="col-md-6">
 
-                    <h6 class="Headings mb-4 mt-0">Type of Connection</h6>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Type of Connection</label>
+                                <div class="mb-3">
+                                    <label>Purchase Date</label>
+                                    <input type="date" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.purchaseDate" name="purchaseDate" required />
+                                </div>
 
-                                <select class="form-select border-focus" [(ngModel)]="newconnection.type" name="type" required>
-                                    <option value="" disabled>Select a Connection Type</option>
-                                    <option value="Water">Water</option>
-                                    <option value="Sewer">Sewer</option>
-                                </select>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-0">
-                            <div class="mb-3">
-                                <label>Applicant is Already Consumer?</label>
-                                <select class="form-select border-focus" [(ngModel)]="newconnection.isAlreadyConsumer" name="isAlreadyConsumer" required>
-                                    <option value="" disabled>Select Option</option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Permanent Form No.</label>
+                                    <input type="text" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.permanentFormNo" name="permanentFormNo" required />
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <h6 class="Headings mb-4">Applicant's Details</h6>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>First Name</label>
-                                <input type="text" class="form-control border-focus" [(ngModel)]="newconnection.firstName" name="firstName" required />
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Submission Date</label>
+                                    <input type="date" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.submissionDate" name="submissionDate" required />
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Last Name</label>
-                                <input type="text" class="form-control border-focus" [(ngModel)]="newconnection.lastName" name="lastName" required />
+                        <h6 class="Headings mb-4 mt-0">Type of Connection</h6>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Type of Connection</label>
+
+                                    <select class="form-select border-focus" [(ngModel)]="newconnection.type"
+                                        name="type" required>
+                                        <option value="" disabled>Select a Connection Type</option>
+                                        <option value="Water">Water</option>
+                                        <option value="Sewer">Sewer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-0">
+                                <div class="mb-3">
+                                    <label>Applicant is Already Consumer?</label>
+                                    <select class="form-select border-focus"
+                                        [(ngModel)]="newconnection.isAlreadyConsumer" name="isAlreadyConsumer" required>
+                                        <option value="" disabled>Select Option</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                   
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Father's/Husband's Name</label>
-                                <input type="text" class="form-control border-focus" [(ngModel)]="newconnection.fatherHusbandName" name="fatherHusbandName" required />
+
+                        <h6 class="Headings mb-4">Applicant's Details</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.firstName" name="firstName" required />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.lastName" name="lastName" required />
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Occupation</label>
-                                <input type="text" class="form-control border-focus" [(ngModel)]="newconnection.occupation" name="occupation" required />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Father's/Husband's Name</label>
+                                    <input type="text" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.fatherHusbandName" name="fatherHusbandName"
+                                        required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Occupation</label>
+                                    <input type="text" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.occupation" name="occupation" required />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Present Address</label>
-                                <textarea class="form-control border-focus" name="presentAddress" id="presentAddress" cols="30" rows="4" [(ngModel)]="newconnection.presentAddress"></textarea>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Present Address</label>
+                                    <textarea class="form-control border-focus" name="presentAddress"
+                                        id="presentAddress" cols="30" rows="4"
+                                        [(ngModel)]="newconnection.presentAddress"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Phone No</label>
+                                    <input type="text" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.phoneNumber" name="phoneNo" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label>Mobile No</label>
+                                    <input type="text" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.mobileNo" name="mobileNo" required />
+                                </div>
+
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Phone No</label>
-                                <input type="text" class="form-control border-focus" [(ngModel)]="newconnection.phoneNumber" name="phoneNo" required />
+                        <h6 class="Headings mb-4 mt-0"><span style="opacity: 0;">Form Fees</span></h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Form Fee</label>
+                                    <input type="number" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.formFee" name="formFee" required disabled="true" />
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label>Mobile No</label>
-                                <input type="text" class="form-control border-focus" [(ngModel)]="newconnection.mobileNo" name="mobileNo" required />
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <h6 class="Headings mb-4 mt-0"><span style="opacity: 0;">Form Fees</span></h6>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Form Fee</label>
-                                <input type="number" class="form-control border-focus" [(ngModel)]="newconnection.formFee" name="formFee" required disabled="true"/>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Receipt No</label>
+                                    <input type="text" class="form-control border-focus"
+                                        [(ngModel)]="newconnection.receiptNo" name="receiptNo" required />
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label>Receipt No</label>
-                                <input type="text" class="form-control border-focus" [(ngModel)]="newconnection.receiptNo" name="receiptNo" required />
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-                    (click)="resetForm()">Cancel</button>
-                <button type="submit" class="btn btn-dark btn-submit" id="btn-submit" (click)="updateConnection()">{{ isConsumerUpdateModalOpen ? 'Update Application' : 'Submit Application' }}</button>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                        (click)="resetForm()">Cancel</button>
+                    <button type="submit" class="btn btn-dark btn-submit" id="btn-submit"
+                        (click)="updateConnection()">{{ isConsumerUpdateModalOpen ? 'Update Application' : 'Submit
+                        Application' }}</button>
+                </div>
             </div>
         </div>
     </div>
-</div>

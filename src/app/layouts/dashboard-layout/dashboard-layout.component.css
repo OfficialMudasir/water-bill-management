@@ -57,3 +57,12 @@
     color: white;
     border-radius: 5px;
 }
+
+.text-success {
+    color: #28a745 !important;
+  }
+  
+  .text-danger {
+    color: #dc3545 !important;
+  }
+  

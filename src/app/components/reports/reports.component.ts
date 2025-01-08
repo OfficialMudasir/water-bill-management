@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
@@ -37,10 +37,12 @@ interface User {
   imports: [CommonModule, FormsModule],
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css'],
-  
+
 })
-export class ReportsComponent {
-  userType:string=localStorage.getItem('userType') || '';
+export class ReportsComponent implements OnInit {
+  userType: string = localStorage.getItem('userType') || '';
+  division: string = localStorage.getItem('operatorDivision') || '';
+
 
   reportCategories: ReportCategory[] = [
     {
@@ -74,7 +76,8 @@ export class ReportsComponent {
         { name: 'Bill Generation', link: '#' },
         { name: 'Payment History', link: '#' },
         { name: 'Defaulters List', link: '#' },
-        { name: 'Total Bill Generated Consumer Vise', link: '#' }
+        { name: 'Total Bill Generated Consumer Vise', link: '#' },
+        { name: 'Total Demand Generated', link: '#' }
       ]
     },
     {
@@ -146,9 +149,9 @@ export class ReportsComponent {
   ];
 
   selectedReportType: string = 'All Types';
-  selectedReport:string='total-online-payment-received';
-  selectedReportName:string='Total Online Payment Received';
-  selectedReportDateRange:string='perDay';
+  selectedReport: string = 'total-online-payment-received';
+  selectedReportName: string = 'Total Online Payment Received';
+  selectedReportDateRange: string = 'perDay';
   totalUsers: number = this.userGroups.reduce((sum, group) => sum + group.count, 0);
 
   totalOnlinePayments: any[] = [
@@ -295,7 +298,7 @@ export class ReportsComponent {
   ];
 
   users: User[] = [
-    { 
+    {
       name: 'John Doe',
       email: 'john@example.com',
       role: 'Admin',
@@ -361,6 +364,38 @@ export class ReportsComponent {
     }
   ];
 
+  totalDemandGenerated = [
+    {
+      connectionId: 'C001',
+      consumerName: 'John Doe',
+      totalDemand: 1500, // Total demand in kWh
+      billingCycle: 'January 2023', // Example billing cycle
+      status: 'Completed' // Status of the demand
+    },
+    {
+      connectionId: 'C002',
+      consumerName: 'Jane Smith',
+      totalDemand: 2000,
+      billingCycle: 'January 2023',
+      status: 'Completed'
+    },
+    {
+      connectionId: 'C003',
+      consumerName: 'Alice Johnson',
+      totalDemand: 1800,
+      billingCycle: 'February 2023',
+      status: 'Pending'
+    },
+    {
+      connectionId: 'C004',
+      consumerName: 'Bob Brown',
+      totalDemand: 2200,
+      billingCycle: 'February 2023',
+      status: 'Completed'
+    },
+    
+  ];
+
   billingRates = {
     residentialRate: '',
     commercialRate: '',
@@ -372,17 +407,25 @@ export class ReportsComponent {
   applicationId: string = '';
   pipeLengthKm: string = '';
   estimatedAmount: string = '';
-  connectionType:string='';
-  address:string='';
-  dateRange:string='';
-  reportType:string='';
-  format:string='';
-  includeCharts:string='';
-  includeSummary:string='';
-  includeRawData:string='';
+  connectionType: string = '';
+  address: string = '';
+  dateRange: string = '';
+  reportType: string = '';
+  format: string = '';
+  includeCharts: string = '';
+  includeSummary: string = '';
+  includeRawData: string = '';
 
 
-
+  ngOnInit(): void {
+    if (this.userType !== 'Operator') {
+      this.reportCategories.forEach((category) => {
+        if (category.title === 'Billing Reports') {
+          category.reports = category.reports.filter(report => report.name !== 'Total Demand Generated');
+        }
+      });
+    }
+  }
 
   saveChanges() {
     console.log('Saving billing rates:', this.billingRates);
@@ -424,7 +467,7 @@ export class ReportsComponent {
 
   // Add methods for chart functionality when needed
   generateReport(name: string) {
-    this.selectedReportName=name;
+    this.selectedReportName = name;
     this.selectedReport = name.toLowerCase().replaceAll(' ', '-');
     console.log(`Generating report: ${name}`);
     // Implement report generation logic
@@ -454,25 +497,25 @@ export class ReportsComponent {
   }
 
   getStatusClass(status: string): string {
-    return status.toLowerCase() === 'active' 
+    return status.toLowerCase() === 'active'
       ? 'bg-green-100 text-green-800 rounded-pill px-2 py-1'
       : 'bg-red-100 text-red-800 rounded-pill px-2 py-1';
   }
 
   getpaymentStatusClass(status: string): string {
-    return status.toLowerCase() === 'paid' 
+    return status.toLowerCase() === 'paid'
       ? 'bg-green-100 text-green-800 rounded-pill px-2 py-1'
       : 'bg-red-100 text-red-800 rounded-pill px-2 py-1';
   }
 
   getDemandStatusClass(status: string): string {
-    return status.toLowerCase() === 'active' 
+    return status.toLowerCase() === 'completed'
       ? 'bg-green-100 text-green-800 rounded-pill px-2 py-1'
       : 'bg-red-100 text-red-800 rounded-pill px-2 py-1';
   }
 
   getCollectionStatusClass(status: string): string {
-    return status.toLowerCase() === 'completed' 
+    return status.toLowerCase() === 'completed'
       ? 'bg-green-100 text-green-800 rounded-pill px-2 py-1'
       : 'bg-red-100 text-red-800 rounded-pill px-2 py-1';
   }
@@ -487,7 +530,7 @@ export class ReportsComponent {
     // Implement delete functionality
   }
 
-  onSubmit(){
+  onSubmit() {
 
   }
 } 

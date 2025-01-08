@@ -13,6 +13,7 @@ import { ComplaintHistoryComponent } from './components/consumer/complaint-histo
 import { RegisterComplaintComponent } from './components/consumer/register-complaint/register-complaint.component';
 import { ConsumerComponent } from './components/consumer/consumer/consumer.component';
 import { PaymentAdjustmentComponent } from './components/consumer/payment-adjustment/payment-adjustment.component';
+import { BillGrievanceComponent } from './components/bill-grievance/bill-grievance.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -33,6 +34,7 @@ export const routes: Routes = [
       { path: 'consumer/register-complaint', component: RegisterComplaintComponent },
       { path: 'consumer/consumer', component: ConsumerComponent },
       { path: 'consumer/payment-adjustment', component: PaymentAdjustmentComponent },
+      {path:  'bill-grievance', component: BillGrievanceComponent}
 
 
 

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy,Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser  } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { Subscription, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -9,7 +10,7 @@ import { RouterModule, Router } from '@angular/router';
   templateUrl: './dashboard-layout.component.html',
   styleUrls: ['./dashboard-layout.component.css']
 })
-export class DashboardLayoutComponent {
+export class DashboardLayoutComponent implements OnInit, OnDestroy {
   username: string = '';
   userType: string = '';
   password: string = '';
@@ -21,6 +22,7 @@ export class DashboardLayoutComponent {
     { name: 'Connections', link: '/connections', icon: 'bi bi-plug' },
     { name: 'Billing', link: '/billing', icon: 'bi bi-receipt' },
     { name: 'Approvals', link: '/approvals', icon: 'bi bi-check2-square' },
+    { name: 'Grievances', link: '/bill-grievance', icon: 'bi bi-check2-square' },
     { name: 'Reports', link: '/reports', icon: 'bi bi-file-text' },
     { name: 'Settings', link: '/settings', icon: 'bi bi-gear' },
 
@@ -29,7 +31,7 @@ export class DashboardLayoutComponent {
     { name: 'Complaint History', link: '/consumer/complaint-history', icon: 'bi bi-file-text' },
     { name: 'Payment Adjustment', link: '/consumer/payment-adjustment', icon: 'bi bi-gear' },
 
-    
+
 
 
   ];
@@ -40,11 +42,40 @@ export class DashboardLayoutComponent {
   ];
   selectedMenuItem: string = 'Dashboard';
 
+  isOnline = true; // Tracks internet connectivity
+  onlineSubscription!: Subscription;
+  offlineSubscription!: Subscription;
 
-  constructor(private router: Router) {
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router) {
     this.initializeUserDetails();
     this.configureMenuItems();
   }
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      // Check initial online status
+      this.isOnline = navigator.onLine;
+
+      // Listen to online and offline events
+      this.onlineSubscription = fromEvent(window, 'online').subscribe(() => {
+        this.isOnline = true;
+      });
+      this.offlineSubscription = fromEvent(window, 'offline').subscribe(() => {
+        this.isOnline = false;
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe only if running in the browser
+    if (isPlatformBrowser(this.platformId)) {
+      this.onlineSubscription.unsubscribe();
+      this.offlineSubscription.unsubscribe();
+    }
+  }
+
+  
 
   private initializeUserDetails() {
     if (this.isBrowser()) {
@@ -75,11 +106,11 @@ export class DashboardLayoutComponent {
         break;
       case 'Assistant':
         this.selectedMenuItem = "Approvals";
-        this.menuItems = this.allMenus.filter(item => ['Approvals'].includes(item.name));
+        this.menuItems = this.allMenus.filter(item => ['Approvals', 'Reports'].includes(item.name));
         break;
       case 'Junior':
         this.selectedMenuItem = "Approvals";
-        this.menuItems = this.allMenus.filter(item => ['Approvals'].includes(item.name));
+        this.menuItems = this.allMenus.filter(item => ['Approvals', 'Reports', 'Grievances'].includes(item.name));
         break;
       case 'Operator':
         this.selectedMenuItem = "Consumer"
@@ -87,7 +118,7 @@ export class DashboardLayoutComponent {
         break;
       case 'Consumer':
         this.selectedMenuItem = "My Bills";
-        this.menuItems = this.allMenus.filter(item => ['My Bills', 'Register Complaint', 'Complaint History' ].includes(item.name));
+        this.menuItems = this.allMenus.filter(item => ['My Bills', 'Register Complaint', 'Complaint History'].includes(item.name));
         break;
       default:
         this.menuItems = this.allMenus.filter(item => item.name === 'Dashboard');

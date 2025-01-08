@@ -1,0 +1,119 @@
+<table style="display: none;">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Consumer ID</th>
+            <th>Consumer Name</th>
+            <th>Bill Date</th>
+            <th>Grievance Date</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Assigned To</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let grievance of grievances">
+            <td>{{ grievance.id }}</td>
+            <td>{{ grievance.consumerId }}</td>
+            <td>{{ grievance.consumerName }}</td>
+            <td>{{ grievance.billDate }}</td>
+            <td>{{ grievance.grievanceDate }}</td>
+            <td>{{ grievance.description }}</td>
+            <td>{{ grievance.status }}</td>
+            <td>{{ grievance.assignedTo }}</td>
+            <td>
+                <button *ngIf="grievance.assignedTo === 'Junior Engineer' && grievance.status === 'Pending'"
+                    (click)="resolveGrievance(grievance.id)">
+                    Resolve
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="container-fluid">
+
+    <!-- Approval Queue Section -->
+    <div class="card">
+        <div class="card-body">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="card-title mb-0">Bill Grievances</h5>
+
+            </div>
+
+            <!-- Applications Table -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>
+                                <input type="checkbox" class="form-check-input" (change)="toggleSelectAll($event)">
+                            </th>
+
+                            <th>ID</th>
+                            <th>Consumer ID</th>
+                            <th>Consumer Name</th>
+                            <th>Bill ID</th>
+                            <th>Bill Date</th>
+                            <th>Grievance Date</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Assigned To</th>
+                            <th>Actions</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let grievance of grievances">
+                            <td>
+                                <input type="checkbox" class="form-check-input"
+                                    [checked]="isSelected(grievance.consumerId)"
+                                    (change)="toggleSelect(grievance.consumerId)">
+                            </td>
+                            <td>{{ grievance.id }}</td>
+                            <td>{{ grievance.consumerId }}</td>
+                            <td>{{ grievance.consumerName }}</td>
+                            <td>{{ grievance.billId }}</td>
+                            <td>{{ grievance.billDate }}</td>
+                            <td>{{ grievance.grievanceDate }}</td>
+                            <td>{{ grievance.description }}</td>
+                            <td>
+                                <span [class]="getStatusClass(grievance.status)">
+                                    {{grievance.status}}
+                                </span>
+                            </td>
+                            <td>{{ grievance.assignedTo }}</td>
+
+                            <td>
+                                <button class="btn btn-link text-dark p-0 me-2 check-hover"
+                                    *ngIf="grievance.status === 'Pending'" (click)="resolveGrievance(grievance.id)"
+                                    title="Resolve">
+                                    <i class="bi bi-check"></i>
+                                </button>
+                                <button class="btn btn-link text-dark p-0" *ngIf="grievance.status === 'Pending'"
+                                    (click)="rejectGrievance(grievance.id)" title="Reject">
+                                    
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="text-muted">
+                    Showing 1 to 10 of 25 Grievances
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary">Previous</button>
+                    <button class="btn btn-outline-secondary">Next</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
