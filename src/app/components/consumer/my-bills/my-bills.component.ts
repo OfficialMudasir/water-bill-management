@@ -131,7 +131,7 @@ export class MyBillsComponent {
         { name: 'View Current Bill', link: '#', active: true },
         { name: 'View Previous Bill', link: '#' },
         { name: 'Pay Bill', link: '#' },
-        { name: 'Change Connection Request', link: '#' }
+        // { name: 'Change Connection Request', link: '#' }
 
       ]
     },

@@ -2,10 +2,15 @@
     <div class="mt-0 mb-4">
         <!-- Settings Categories -->
         <!-- Header with New Consumer Button -->
-        <div class="">
+        <div class="d-flex gap-2">
             <button type="button" class="btn btn-dark p-2 fw-bold" (click)="resetForm()" data-bs-toggle="modal"
                 data-bs-target="#newConnectionModal">
                 <i class="bi bi-plus-lg me-2"></i>Apply New Connection
+            </button>
+
+            <button type="button" class="btn btn-dark p-2 fw-bold " data-bs-toggle="modal"
+                data-bs-target="#changeConnectionModal">
+                <i class="bi bi-plus-lg me-2"></i>Change Connection Request
             </button>
 
         </div>
@@ -598,7 +603,8 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-dark mb-4 mt-4" (click)="submitChangeRequest()">Submit Connection Request</button>
+                        <button type="submit" class="btn btn-dark mb-4 mt-4" (click)="submitChangeRequest()">Submit
+                            Connection Request</button>
                     </form>
 
                 </div>
@@ -1281,3 +1287,61 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal for displaying image -->
+    <div class="modal fade" id="changeConnectionModal" tabindex="-1" aria-labelledby="changeConnectionModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changeConnectionModalLabel">Change Connection Request</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form (ngSubmit)="onSubmit()" #complaintForm="ngForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group ">
+                                    <label for="userName">Connection ID</label>
+                                    <input type="text" id="userName" [(ngModel)]="userName" name="userName" required
+                                        class="form-control mt-1" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group ">
+                                    <label for="userName">Full Name</label>
+                                    <input type="text" id="userName" [(ngModel)]="userName" name="userName" required
+                                        class="form-control mt-1" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group ">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" [(ngModel)]="email" name="email" required
+                                        class="form-control mt-1" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label>Type of Connection</label>
+                                <select class="form-select border-focus mt-1" [(ngModel)]="newconnection.type"
+                                    name="type" required>
+                                    <option value="" disabled>Select a Connection Type</option>
+                                    <option value="Residential">Residential</option>
+                                    <option value="Commercial">Commercial</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-dark" (click)="submitChangeRequest()">Submit
+                        Connection Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

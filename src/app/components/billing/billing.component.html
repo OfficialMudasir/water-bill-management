@@ -12,12 +12,14 @@
 
                         </i>
                         <p class="text-muted mb-0">
-                            <input type="file" class="hidden" style="opacity: 0;" id="meterReadingsFile"
-                                accept=".xlsx,.xls"><br />
+                            <input type="file" class="hidden" (change)="onFileChange($event)" accept=".xlsx, .xls"
+                                style="opacity: 0;" id="meterReadingsFile" accept=".xlsx,.xls"><br />
                             <span>Upload meter readings Excel file</span>
                         </p>
                     </div>
-                    <button class="btn btn-dark w-100">Generate Bills</button>
+
+                    <p class="text-center mb-3">{{meterReadingFile.name}}</p>
+                    <button class="btn btn-dark w-100" (click)="generateBills()">Generate Bills</button>
                 </div>
             </div>
         </div>
@@ -39,7 +41,7 @@
         </div>
 
         <!-- Billing Corrections Card -->
-        <div class="col-md-4">
+        <div class="col-md-4" *ngIf="userType === 'Admin'">
             <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title mb-4">Billing Corrections</h5>
@@ -62,12 +64,12 @@
         <div class="card-body">
             <!-- Header -->
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="card-title mb-0">Recent Bills</h5>
+                <h5 class="card-title mb-0">Meter Readings</h5>
                 <div class="d-flex gap-2">
-                    <input type="text" class="form-control" placeholder="Search bills..." [(ngModel)]="searchTerm">
+                    <input type="text" class="form-control" placeholder="Search readings..." [(ngModel)]="searchTerm">
                     <select class="form-select" style="width: 200px;" [(ngModel)]="selectedPaymentStatus">
-                        <option value="">Payment Status</option>
-                        <option value="paid">Paid</option>
+                        <option value="">Reading Status</option>
+                        <option value="paid">Completed</option>
                         <option value="pending">Pending</option>
                         <option value="overdue">Overdue</option>
                     </select>
@@ -82,36 +84,37 @@
                             <th>
                                 <input type="checkbox" class="form-check-input" (change)="toggleSelectAll($event)">
                             </th>
-                            <th>BILL ID</th>
-                            <th>CONNECTION ID</th>
-                            <th>AMOUNT</th>
-                            <th>DUE DATE</th>
-                            <th>STATUS</th>
-                            <th>ACTIONS</th>
+                            <th>No of Bills Generated</th>
+                            <th>Billing Cycle</th>
+                            <th>Total Demand (₹)</th>
+                            <th>PDF</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let bill of bills">
+                        <tr *ngFor="let bill of billingData">
                             <td>
                                 <input type="checkbox" class="form-check-input" [checked]="isSelected(bill.id)"
                                     (change)="toggleSelect(bill.id)">
                             </td>
-                            <td>{{bill.id}}</td>
-                            <td>{{bill.connectionId}}</td>
-                            <td>₹{{bill.amount}}</td>
-                            <td>{{bill.dueDate}}</td>
+                            <td>{{ bill.noOfBills }}</td>
+                            <td>{{ bill.billingCycle }}</td>
+                            <td>{{ bill.totalDemand }}</td>
                             <td>
-                                <span [class]="getStatusClass(bill.status)">
+                                <a href="#" target="_blank" class="btn btn-link">Download PDF</a>
+                            </td>
+                            <td>
+                                <span [class]="getStatusClassForBillingData(bill.status)">
                                     {{bill.status}}
                                 </span>
                             </td>
-                            <td>
+                            <td class="">
                                 <button class="btn btn-link text-dark p-0 me-2" data-bs-toggle="modal"
-                                data-bs-target="#imageModal">
+                                    data-bs-target="#recentBillModal">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <button class="btn btn-link text-dark p-0" data-bs-toggle="modal"
-                                data-bs-target="#paymentRecieptModal">
+                                <button class="btn btn-link text-dark p-0" data-bs-toggle="modal" data-bs-target="">
                                     <i class="bi bi-download"></i>
                                 </button>
                             </td>
@@ -132,6 +135,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 
@@ -211,7 +215,6 @@
     </div>
 </div>
 
-
 <!-- Modal for displaying image -->
 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -233,7 +236,8 @@
 
 
 <!-- Modal for displaying image -->
-<div class="modal fade" id="paymentRecieptModal" tabindex="-1" aria-labelledby="paymentRecieptModalLabel" aria-hidden="true">
+<div class="modal fade" id="paymentRecieptModal" tabindex="-1" aria-labelledby="paymentRecieptModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -259,7 +263,7 @@
                             <p><strong>Consumer Number:</strong> {{ paymentReciept.consumerNumber }}</p>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="receipt-details">
                     <table class="table">
@@ -305,4 +309,93 @@
             </div>
         </div>
     </div>
+</div>
+
+
+<div class="modal fade" id="recentBillModal" tabindex="-1" aria-labelledby="recentBillModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <!-- <div class="modal-header">
+                <h5 class="modal-title" id="recentBillModalLabel">Recent Bills</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div> -->
+            <div class="modal-body p-4">
+                <div class="card">
+
+                    <div class="card-body">
+
+                        <!-- Header -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="card-title mb-0">Recent Bills</h5>
+                            <div class="d-flex gap-2">
+                                <input type="text" class="form-control" placeholder="Search bills..."
+                                    [(ngModel)]="searchTerm">
+                                <select class="form-select" style="width: 200px;" [(ngModel)]="selectedPaymentStatus">
+                                    <option value="">Payment Status</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="overdue">Overdue</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Bills Table -->
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox" class="form-check-input"
+                                                (change)="toggleSelectAll($event)">
+                                        </th>
+                                        <th>BILL ID</th>
+                                        <th>CONNECTION ID</th>
+                                        <th>AMOUNT</th>
+                                        <th>DUE DATE</th>
+                                        <th>STATUS</th>
+                                        <th>ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let bill of bills">
+                                        <td>
+                                            <input type="checkbox" class="form-check-input"
+                                                [checked]="isSelected(bill.id)" (change)="toggleSelect(bill.id)">
+                                        </td>
+                                        <td>{{bill.id}}</td>
+                                        <td>{{bill.connectionId}}</td>
+                                        <td>₹{{bill.amount}}</td>
+                                        <td>{{bill.dueDate}}</td>
+                                        <td>
+                                            <span [class]="getStatusClass(bill.status)">
+                                                {{bill.status}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-link text-dark p-0 me-2" data-bs-toggle="modal"
+                                                data-bs-target="#imageModal">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                            <button class="btn btn-link text-dark p-0" data-bs-toggle="modal"
+                                                data-bs-target="#paymentRecieptModal">
+                                                <i class="bi bi-download"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-dark">Download All</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal">
+
 </div>
